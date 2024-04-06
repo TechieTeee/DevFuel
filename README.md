@@ -1,5 +1,5 @@
 # DevFuel
-DevFuel is a command-line tool built in Rust that helps developers manage tasks and track their caffeine intake throughout the day. It also provides recommendations for water intake based on caffeine consumption, suggests self-care tasks when caffeine intake is high, and shares fun facts about the importance of self-care.
+DevFuel is a command-line tool built in Rust that helps developers manage tasks and track their caffeine intake throughout the day and promote self care. It provides recommendations for water intake based on caffeine consumption, suggests self-care tasks when caffeine intake is high, and shares fun facts about the importance of self-care.
 
 ## Features
 
