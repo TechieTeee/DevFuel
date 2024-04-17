@@ -13,7 +13,9 @@ impl DevFuel {
         }
     }
 
-    fn add_task(&mut self, task: String) {
+    fn add_task(&mut self, mut task: String) {
+        // Shrink to fit to save memory
+        task.shrink_to_fit();
         self.tasks.push(task);
         println!("Task added successfully!");
     }
@@ -27,7 +29,8 @@ impl DevFuel {
 
     fn track_caffeine(&mut self) {
         println!("Enter caffeine intake in mg:");
-        let mut input = String::new();
+        // Preallocate buffer
+        let mut input = String::with_capacity(16);
         io::stdin().read_line(&mut input).expect("Failed to read input");
         let amount: f64 = input.trim().parse().expect("Invalid input");
         self.caffeine_tracker.log_intake(amount);
@@ -55,7 +58,7 @@ impl CaffeineTracker {
     }
 
     fn recommend_water(&self) {
-        let water_needed = self.intake * 0.75; // Example: Recommend drinking 75% of caffeine intake in water
+        let water_needed = self.intake * 0.75;
         println!("Recommend drinking {:.2} ml of water.", water_needed);
     }
 
@@ -79,7 +82,8 @@ fn main() {
         println!("3. Track Caffeine");
         println!("4. Exit");
 
-        let mut choice = String::new();
+        // Preallocate buffer for choice
+        let mut choice = String::with_capacity(1); 
         io::stdin().read_line(&mut choice).expect("Failed to read line");
 
         match choice.trim().parse() {
