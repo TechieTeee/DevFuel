@@ -14,7 +14,6 @@ impl DevFuel {
     }
 
     fn add_task(&mut self, mut task: String) {
-        // Shrink to fit to save memory
         task.shrink_to_fit();
         self.tasks.push(task);
         println!("Task added successfully!");
@@ -29,7 +28,6 @@ impl DevFuel {
 
     fn track_caffeine(&mut self) {
         println!("Enter caffeine intake in mg:");
-        // Preallocate buffer
         let mut input = String::with_capacity(16);
         io::stdin().read_line(&mut input).expect("Failed to read input");
         let amount: f64 = input.trim().parse().expect("Invalid input");
@@ -37,6 +35,24 @@ impl DevFuel {
         self.caffeine_tracker.display_intake();
         self.caffeine_tracker.recommend_water();
         self.caffeine_tracker.recommend_self_care();
+    }
+
+    fn mental_health_check_in(&self) {
+        println!("How are you feeling today? (1: Good, 2: Okay, 3: Not so great)");
+        let mut input = String::new();
+        io::stdin().read_line(&mut input).expect("Failed to read input");
+        match input.trim().parse::<u32>() {
+            Ok(1) => println!("Glad to hear that you're feeling good!"),
+            Ok(2) => println!("Hang in there, things will get better!"),
+            Ok(3) => {
+                println!("Remember, it's okay not to be okay. Here are some suggestions:");
+                println!("1. Call a friend or family member to talk.");
+                println!("2. Go out with friends for a change of scenery.");
+                println!("3. Take a walk outside and enjoy nature.");
+                println!("4. Consider seeking professional help if you're feeling really bad.");
+            }
+            _ => println!("Invalid choice."),
+        }
     }
 }
 
@@ -80,10 +96,11 @@ fn main() {
         println!("1. Add Task");
         println!("2. List Tasks");
         println!("3. Track Caffeine");
-        println!("4. Exit");
+        println!("4. Mental Health Check-in");
+        println!("5. Ask if Touched Grass");
+        println!("6. Exit");
 
-        // Preallocate buffer for choice
-        let mut choice = String::with_capacity(1); 
+        let mut choice = String::new();
         io::stdin().read_line(&mut choice).expect("Failed to read line");
 
         match choice.trim().parse() {
@@ -95,7 +112,9 @@ fn main() {
             }
             Ok(2) => dev_fuel.list_tasks(),
             Ok(3) => dev_fuel.track_caffeine(),
-            Ok(4) => break,
+            Ok(4) => dev_fuel.mental_health_check_in(),
+            Ok(5) => println!("Did you touch grass today?"),
+            Ok(6) => break,
             _ => println!("Invalid choice. Please choose again."),
         }
     }
