@@ -1,4 +1,4 @@
-use std::io;
+use std::io::{self, Write};
 
 struct DevFuel {
     tasks: Vec<String>,
@@ -8,14 +8,14 @@ struct DevFuel {
 impl DevFuel {
     fn new() -> DevFuel {
         DevFuel {
-            tasks: Vec::new(),
+            // Reserve initial capacity
+            tasks: Vec::with_capacity(10), 
             caffeine_tracker: CaffeineTracker::new(),
         }
     }
 
-    fn add_task(&mut self, mut task: String) {
-        task.shrink_to_fit();
-        self.tasks.push(task);
+    fn add_task(&mut self, task: &str) {
+        self.tasks.push(task.to_string());
         println!("Task added successfully!");
     }
 
@@ -28,7 +28,7 @@ impl DevFuel {
 
     fn track_caffeine(&mut self) {
         println!("Enter caffeine intake in mg:");
-        let mut input = String::with_capacity(16);
+        let mut input = String::new();
         io::stdin().read_line(&mut input).expect("Failed to read input");
         let amount: f64 = input.trim().parse().expect("Invalid input");
         self.caffeine_tracker.log_intake(amount);
@@ -108,7 +108,7 @@ fn main() {
                 println!("Enter task description:");
                 let mut description = String::new();
                 io::stdin().read_line(&mut description).expect("Failed to read line");
-                dev_fuel.add_task(description.trim().to_string());
+                dev_fuel.add_task(description.trim());
             }
             Ok(2) => dev_fuel.list_tasks(),
             Ok(3) => dev_fuel.track_caffeine(),
